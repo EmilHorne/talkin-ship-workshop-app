@@ -69,7 +69,7 @@ export default function Login() {
     setIsLoggedIn(false);
     setIsInBeta(false);
     const context: any = ldclient?.getContext();
-    context.user.name = "Anonymous";
+    context.user.name = "anonymous";
     context.user.inBeta = false;
     ldclient?.identify(context);
     setCookie("ldcontext", context);

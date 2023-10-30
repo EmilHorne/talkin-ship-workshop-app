@@ -63,11 +63,11 @@ const Inventory = () => {
   const client = useLDClient();
 
   const addToCartClickHandler = () => {
-    /**
-     * 
-     * Add code from "Using the Metric System", Step 4a here. 
-     * 
-     */
+    //Step 4a
+    if (client) {
+      client.track("Add to Cart Click"); // this is a "conversion" metric, and this track call "converts" it from "never happened" to "happened at least once" for the current context (whoever is logged in, in this case)
+      client.flush();  // flush sends any pending events to LaunchDarkly, which is important *before* we redirect the user
+    }
   }
 
   const {
@@ -116,7 +116,7 @@ const Inventory = () => {
       </div>
       <div className="grid sm:grid-cols-2 grid-cols-1 lg:grid-cols-4">
         {stripeProducts.map((product: Product, index: number) => (
-          // Step 4c
+          //Step 4c
           <ProductCard
             key={index}
             item={product}
@@ -124,18 +124,29 @@ const Inventory = () => {
             isGoggle={product.category === "goggle"} 
             isFeatured={featuredProductLabel && index < 4}
           >
-            {/*************************************************************************
-             * We're missing some code here to enable our new cart functionality! 
-             * Retrieve this code from "Failure Is An Option! - Add the Code", Step 1
-             *************************************************************************/}
-            <ReserveButton
-              setHandleModal={setHandleModal}
-              handleModal={handleModal}
-              handleClickTest={handleClickTest}
-              updateField={updateField}
-              formData={{ name, email }}
-              onButtonClick={onButtonClick}
-            />
+            {
+              billing ? (
+                <AddToCartButton
+                  product={product}
+                  errorTesting={errorTesting}
+                  clickHandler={addToCartClickHandler}
+                />
+              ) : (
+                <ReserveButton
+                  setHandleModal={setHandleModal}
+                  handleModal={handleModal}
+                  handleClickTest={handleClickTest}
+                  updateField={updateField}
+                  formData={{ name, email }}
+                  onButtonClick={onButtonClick}
+                />
+              )
+            }
+            {
+              billing && (
+                <ErrorDialog errorState={errorState} setErrorState={setErrorState} />
+              )
+            }
             {/*****************************************************************
              * Make sure you replace the code above with your new cart code!
              ******************************************************************/}

@@ -75,11 +75,12 @@ const CartSummary = () => {
         type="submit"
         css={{marginRight: 25}}
         onClick={() => {
-          /**
-           * 
-           * Add code from "Using the Metric System", Step 4b
-           * 
-           */
+          //Step 4b
+          if (client) {
+            client.track("Cart Checkout Value", {"sku": 123}, 5 + Math.floor(Math.random() * 5)); // random value from 5-9 
+            client.track("Checkout Click"); // this is a "conversion" metric, and this track call "converts" it from "never happened" to "happened at least once" for the current context (whoever is logged in, in this case)
+            client.flush(); // flush sends any pending events to LaunchDarkly, which is important *before* we redirect the user
+          }
         }}
       >
         Checkout

@@ -88,7 +88,7 @@ export default function AdminPanel() {
         <DialogHeader>
           <DialogTitle className="text-2xl">Store Inventory</DialogTitle>
           <DialogDescription>
-            {dbTesting == "postgres" ? (
+            {dbTesting == "complete" ? (
             <div className="mx-auto bg-ldred text-white w-1/3 p-3 shadow-xl font-sohnemono text-center text-xl">
             <p>Database Source Migrated</p>
             </div>
@@ -100,7 +100,7 @@ export default function AdminPanel() {
           </DialogDescription>
         </DialogHeader>
         <div className="overflow-auto">
-        {dbTesting == "postgres" ? (
+        {dbTesting == "complete" ? (
         <Table className="bg-ldgray">
           <TableHeader >
             <TableHead className="text-white">TOGGLE NAME</TableHead>

@@ -28,14 +28,14 @@ export default async function retrieveProducts (req: NextApiRequest, res: NextAp
       jsonObject = JSON.parse(json);
     }
 
-    enableStripe = await ldClient.variation("enableStripe", jsonObject, false);
+    enableStripe = await ldClient.variation("enableStripe", jsonObject, "off");
     newProductExperienceAccess = await ldClient.variation(
       "new-product-experience-access",
       jsonObject,
       "toggle"
     );
 
-    if (enableStripe) {
+    if (enableStripe === "complete") {
       const products = await listAllProducts();
        const allowedCategories = newProductExperienceAccess.replace(/\s/, '').split(",");
 

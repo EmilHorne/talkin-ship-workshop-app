@@ -48,8 +48,8 @@ Below are the missing code snippets for each step of use case 1, risk-free relea
 
 ```jsx
  if (req.method === 'POST') {
-    const enableStripe = await ldClient.variation("enableStripe", jsonObject, false);
- if (enableStripe) {
+    const enableStripe = await ldClient.variation("enableStripe", jsonObject, "off");
+ if (enableStripe === "complete") {
       try {
         const cartDetails = await req.body;
         let line_items: any = [];
@@ -78,8 +78,8 @@ Below are the missing code snippets for each step of use case 1, risk-free relea
     }
   }
   if (req.method === 'GET') {
-    const enableStripe = await ldClient.variation("enableStripe", jsonObject, false);
-    if (enableStripe) {
+    const enableStripe = await ldClient.variation("enableStripe", jsonObject, "off");
+    if (enableStripe === "complete") {
       try {
         res.send("You are good to go!");
       } catch (error: any) {
@@ -126,9 +126,9 @@ Navigation menu:
    **File - /api/inventory.ts**
 
 ```jsx
-dbTesting = await ldClient.variation("dbTesting", jsonObject, false);
+dbTesting = await ldClient.variation("dbTesting", jsonObject, "off");
 
-if (dbTesting == "postgres") {
+if (dbTesting == "complete") {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_DB_URL || "",
     process.env.NEXT_PUBLIC_DB_ANON_KEY || ""
@@ -224,14 +224,14 @@ This builds off the previous two use cases, make sure they have created flags fo
    **File - /api/product.ts**
 
 ```jsx
-enableStripe = await ldClient.variation("enableStripe", jsonObject, false);
+enableStripe = await ldClient.variation("enableStripe", jsonObject, "off");
 newProductExperienceAccess = await ldClient.variation(
   "new-product-experience-access",
   jsonObject,
   "toggle"
 );
 
-if (enableStripe) {
+if (enableStripe === "complete") {
   const products = await listAllProducts();
   const allowedCategories = newProductExperienceAccess.split(",");
 

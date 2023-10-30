@@ -73,14 +73,22 @@ export default async function handler(
     const json = decodeURIComponent(clientContext);
     jsonObject = JSON.parse(json);
   }
-  enableStripe = await ldClient.variation("enableStripe", jsonObject, false);
+  enableStripe = await ldClient.variation("enableStripe", jsonObject, "off");
 
   /****************************************************************************************
    * we're missing the code to retrieve the new products. 
    * You'll find this code in "Preparing for Launch - Updating our Product Catalog" Step 3
    ****************************************************************************************/
+  // this function retrieves our product catalog from the Stripe API based on our flag values.
+  // If you want to see the flag evaluations, check out the `/src/utils/product-helpers.ts`
+
   if (req.method === "GET") {
-    return res.json(product)
+    if (enableStripe === "complete") {
+    retrieveProducts(req, res)
+  }
+  else {
+      return res.json(product);
+    }
   }
   /**************************************************************************
    * Put replacement code between these two comments blocks 
